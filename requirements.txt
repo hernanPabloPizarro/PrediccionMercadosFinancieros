@@ -3,5 +3,3 @@ pandas
 yfinance
 mplfinance
 numpy
-tempfile
-PIL
