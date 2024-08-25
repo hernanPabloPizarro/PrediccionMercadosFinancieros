@@ -1,6 +1,7 @@
 # PrediccionMercadosFinancieros
-Este proyecto trata de predecir las fechas de máximos y mínimos valores para acciones.
+Este proyecto permite graficar acciones individuales y buscar en que fechas se encuentran barata para la compra o caras para la venta.
+A su vez busca dentro del índice S&P500 cuales están baratas
 
-La información obtenida es solo de carácter educativo. Sea responsable con su uso.
+La información obtenida es solo de carácter educativo. Sea responsable con el uso de la información.
 
-En construcción
+Cualquier comentario es bienvenido
