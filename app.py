@@ -5,9 +5,6 @@ import mplfinance as mpf
 import numpy as np
 import tempfile  # Para manejar archivos temporales
 from PIL import Image  # Para abrir y mostrar imágenes
-import plotly.graph_objs as go
-from plotly.subplots import make_subplots
-
 # ----------------------------------funciones
 
 # --------------------------funcion compra
