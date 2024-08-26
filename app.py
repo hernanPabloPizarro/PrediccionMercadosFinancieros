@@ -5,8 +5,84 @@ import mplfinance as mpf
 import numpy as np
 import tempfile  # Para manejar archivos temporales
 from PIL import Image  # Para abrir y mostrar imágenes
+import plotly.graph_objs as go
+from plotly.subplots import make_subplots
 
 # ----------------------------------funciones
+@st.cache_data
+def cargar_datos_ticker(ticker, period):
+    return yf.download(ticker, period=period)
+# --------------------------graficos de busqueda
+
+# Función para graficar datos
+def graficar_datos_con_subplots(df, ticker, height=900):
+    fig = make_subplots(
+        rows=3, cols=1,  # Tres filas, una columna
+        row_heights=[0.4, 0.4, 0.4],  # Ajusta el tamaño relativo de las filas
+        shared_xaxes=True,  # Comparte el eje X entre los subplots
+        vertical_spacing=0.2  # Espaciado vertical entre subplots
+    )
+
+    # Gráfico de velas en la primera fila
+    fig.add_trace(
+        go.Candlestick(x=df.index, open=df['Open'], high=df['High'], low=df['Low'], close=df['Close'], name='Candlesticks'),
+        row=1, col=1
+    )
+
+    # Indicadores técnicos en la segunda fila
+
+    df['MA20'] = df['Close'].rolling(window=20).mean()
+    df['BB_upper'] = df['MA20'] + 2 * df['Close'].rolling(window=20).std()
+    df['BB_lower'] = df['MA20'] - 2 * df['Close'].rolling(window=20).std()
+    fig.add_trace(go.Scatter(x=df.index, y=df['BB_upper'], line=dict(color='orange', width=1, dash='dash'), name='Bollinger Upper'), row=1, col=1)
+    fig.add_trace(go.Scatter(x=df.index, y=df['BB_lower'], line=dict(color='orange', width=1, dash='dash'), name='Bollinger Lower'), row=1, col=1)
+
+    # MACD y Signal Line en la segunda fila
+    df['EMA12'] = df['Close'].ewm(span=12, adjust=False).mean()
+    df['EMA26'] = df['Close'].ewm(span=26, adjust=False).mean()
+    df['MACD'] = df['EMA12'] - df['EMA26']
+    df['Signal'] = df['MACD'].ewm(span=9, adjust=False).mean()
+    fig.add_trace(go.Scatter(x=df.index, y=df['MACD'], line=dict(color='purple', width=1.5), name='MACD'), row=2, col=1)
+    fig.add_trace(go.Scatter(x=df.index, y=df['Signal'], line=dict(color='red', width=1), name='Signal Line'), row=2, col=1)
+
+    # RSI en la tercera fila
+    delta = df['Close'].diff()
+    gain = (delta.where(delta > 0, 0)).fillna(0)
+    loss = (-delta.where(delta < 0, 0)).fillna(0)
+    avg_gain = gain.rolling(window=14).mean()
+    avg_loss = loss.rolling(window=14).mean()
+    rs = avg_gain / avg_loss
+    df['RSI'] = 100 - (100 / (1 + rs))
+    fig.add_trace(go.Scatter(x=df.index, y=df['RSI'], 
+                             line=dict(color='blue', width=1.5), 
+                             name='RSI'), row=3, col=1)
+    #---
+    fig.add_trace(go.Scatter(
+    x=df.index, 
+    y=[30] * len(df),  # Una lista del mismo largo que el DataFrame con el valor 30
+    line=dict(color='red', width=1, dash='dash'),  # Línea discontinua roja
+    name='RSI 30'), 
+    row=3, col=1)
+
+# Añadir línea horizontal en RSI=70
+    fig.add_trace(go.Scatter(
+    x=df.index, 
+    y=[70] * len(df),  # Una lista del mismo largo que el DataFrame con el valor 70
+    line=dict(color='green', width=1, dash='dash'),  # Línea discontinua verde
+    name='RSI 70'), 
+    row=3, col=1)
+    #---
+    # Configuración del layout
+    fig.update_layout(
+        title=f" {ticker} para 1 año",
+        xaxis_title="Fecha",
+        yaxis_title="Precio",
+        template="plotly_dark",
+        height=height  # Altura total del gráfico
+    )
+
+    return fig
+
 # --------------------------funcion compra
 def obtener_indicadores_compra(ticker, period="1y", period1=None, boll=False, dates=True):
     """
@@ -354,7 +430,7 @@ with st.expander("Buscar"):
         st.write('Cargando acciones, esto demora varios segundos...')
 
         with st.spinner('Por favor, espere mientras se cargan los datos...'):
-            df500, dates500 = compra_tickers(acciones, chart=False, period='1mo', period1=False, boll=True, dates=True)
+            df500, dates500 = compra_tickers(acciones[1:50], chart=False, period='1mo', period1=False, boll=True, dates=True)
         st.write('Datos cargados')
         st.session_state['dates500'] = dates500  # Guardar en session_state
 
@@ -376,7 +452,12 @@ with st.expander("Buscar"):
                     if encontradas:
                         st.success(f'Acciones con señal de compra el {FechaB}:')
                         st.write(encontradas)
-                    #st.session_state['dates500'] = dates500
+                        #Graficos de encontradas
+                        for ticker in encontradas:
+                            df = cargar_datos_ticker(ticker, '1y')
+                            st.subheader(f"Análisis de {ticker}")
+                            st.plotly_chart(graficar_datos_con_subplots(df, ticker))
+                        #Graficos de encontradas
             except NameError as e:
                 st.write('Aún no hay datos cargados')
     else:
