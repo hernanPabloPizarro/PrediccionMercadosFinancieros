@@ -9,3 +9,5 @@ La información obtenida es solo de carácter educativo. Sea responsable con el 
 Cualquier comentario es bienvenido
 link de la app:
 https://prediccionmercadosfinancieros-6cppnyizkznokropw9neao.streamlit.app
+
+![Mi logo](image/captura.jpg)
