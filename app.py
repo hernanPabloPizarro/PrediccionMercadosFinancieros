@@ -227,7 +227,7 @@ with st.container(border=True):
             # Actualizar la barra de progreso
             progreso.progress((i + 1) / num_acciones)
 
-        st.write('Acciones encontradas:')
+        st.write(f'Acciones encontradas: {len(reporte)}')
         st.write(reporte)
         placeholder.empty()
 
