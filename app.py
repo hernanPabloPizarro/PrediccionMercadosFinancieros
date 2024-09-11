@@ -5,9 +5,7 @@ import mplfinance as mpf
 import numpy as np
 import tempfile  # Para manejar archivos temporales
 from PIL import Image  # Para abrir y mostrar imágenes
-import concurrent.futures
 
-@st.cache_data
 def obtener_indicadores_compra2(ticker, period="1y", period1=None, umbral=1, dates=True):
     """
     Obtiene los datos históricos de un ticker y calcula los indicadores técnicos.
@@ -184,6 +182,7 @@ url = 'https://raw.githubusercontent.com/hernanPabloPizarro/PrediccionMercadosFi
 df_syp500 = pd.read_csv(url)
 acciones = df_syp500['Symbol'].tolist()
 
+st.markdown("[Antes de usar esta app. Lea este Manual](https://github.com/hernanPabloPizarro/PrediccionMercadosFinancieros/blob/main/documentación.pdf)")
 st.title("Predictor de Acciones")
 
 with st.container(border=True):
@@ -283,3 +282,5 @@ with st.container(border=True):
                 if image_path:
                     image = Image.open(image_path)
                     st.image(image)
+if st.button('Glosario de Tickers'):
+    st.dataframe(df_syp500[['Symbol','Security', 'GICS Sector']])
