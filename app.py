@@ -7,6 +7,7 @@ import tempfile  # Para manejar archivos temporales
 from PIL import Image  # Para abrir y mostrar imágenes
 import concurrent.futures
 
+@st.cache_data
 def obtener_indicadores_compra2(ticker, period="1y", period1=None, umbral=1, dates=True):
     """
     Obtiene los datos históricos de un ticker y calcula los indicadores técnicos.
