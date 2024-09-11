@@ -5,6 +5,7 @@ import mplfinance as mpf
 import numpy as np
 import tempfile  # Para manejar archivos temporales
 from PIL import Image  # Para abrir y mostrar imágenes
+import concurrent.futures
 
 def obtener_indicadores_compra2(ticker, period="1y", period1=None, umbral=1, dates=True):
     """
@@ -185,28 +186,52 @@ acciones = df_syp500['Symbol'].tolist()
 st.title("Predictor de Acciones")
 
 with st.container(border=True):
-    st.write('Esta sección muestra información cada una acción')
+    st.subheader('_Esta sección muestra información cada una acción_')
     tic = st.text_input("ticker?", value="AAPL")
-    umbra = st.text_input("umbral", value=0)
+    umbra = st.text_input("Umbral inferior", value=0)
+    peripe = st.selectbox('periodo?',['1y', '6mo', '3mo', '1mo'])
+    #señal = st.selectbox('Seleccione la señal para filtrar:',['Señal de baja', 'Compra', 'Venta'])
     charto = st.checkbox("Gráfico?")
+    cuadro = st.checkbox("Tabla?")
 
     a = []
     a.append(tic)
     if st.button('Consultar'):
-        dat, señal, compra, venta = compra_tickers2(a, chart=charto, period="1y", period1=None, umbral=int(umbra), vert_line_compra=None, dates=True)
+        dat, señal, compra, venta = compra_tickers2(a, chart=charto, period=peripe, period1=None, umbral=int(umbra), vert_line_compra=None, dates=True)
+        if cuadro:
+            datim = dat.copy()
+            datim.reset_index(inplace=True)
+            datimba = datim[['Date','Open', 'High', 'Low', 'Close','MACD','Min-B.Inf','Shift']].copy()
+            datimba['Shift'] = datimba['Shift'].replace({1: 'compra', -1: 'venta'})
+            datimba = datimba.rename(columns={'Shift': 'Señal'})
+            datimba['Date'] = pd.to_datetime(datim['Date']).dt.date
+            #df['Date'] = pd.to_datetime(df['Date']).dt.date
+            st.dataframe(datimba)
 
         if charto and not dat.empty:
             image_path = plot_chart2(dat, a, vert_line=list(señal.values())[0], vert_line_compra=list(compra.values())[0], vert_line_venta=list(venta.values())[0])
-        if image_path:
-            image = Image.open(image_path)
-            st.image(image)
-            st.write('Triángulo azul: momento relativo de bajo valor')
-            st.write('Triángulo verde: señal de compra')
-            st.write('Triángulo rojo: señal de venta')
+
+            if image_path:
+                image = Image.open(image_path)
+                st.image(image)
+                st.write('Triángulo azul: momento relativo de bajo valor')
+                st.write('Triángulo verde: señal de compra')
+                st.write('Triángulo rojo: señal de venta')
+
 
 with st.container(border=True):
-    st.write('Esta sección busca acciones baratas')
-    umb = int(st.text_input("umbral?", value="0"))
+    st.subheader('_Esta sección busca acciones por criterio_')
+    señal = st.selectbox('Seleccione la señal para filtrar:',['Sin criterio','Señal de baja', 'Compra', 'Venta'])
+    if señal == 'Señal de baja':
+        umb = int(st.text_input("Umbral inferior?", value="0"))
+    else:
+        umb = 0
+    if señal != 'Sin criterio':
+        perid = int(st.text_input("Período anterior?   (0= último; 1=penúltimo)", value=0))
+        peride = (perid*-1)-1
+    else:
+        peride=-1
+    
     if st.button("Cargar datos actuales"):
         placeholder = st.empty()
         placeholder.write('Cargando acciones, esto demora varios segundos...')
@@ -219,8 +244,21 @@ with st.container(border=True):
         for i in range(num_acciones):
             try:
                 e = compra_tickers2([acciones[i]], chart=False, period="6mo", period1=None, umbral=umb, vert_line_compra=None, dates=False)
-                if (e.iloc[-1]['Min-B.Inf'] < umb) and (e.iloc[-1]['Bll.inf_T'] < 0):
+                if señal == 'Sin criterio':
                     reporte.append(acciones[i])
+                
+                if señal == 'Señal de baja':
+                    if (e.iloc[peride]['Min-B.Inf'] < umb) and (e.iloc[peride]['Bll.inf_T'] < 0):
+                        reporte.append(acciones[i])
+
+                if señal == 'Compra':
+                    if e.iloc[peride]['shift']==1:
+                        reporte.append(acciones[i])
+
+                if señal == 'Venta':
+                    if e.iloc[peride]['Shift']==-1:
+                        reporte.append(acciones[i])
+
             except Exception as e:
                 print(f'Error procesando {acciones[i]}: {e}')
             
