@@ -5,7 +5,7 @@ import mplfinance as mpf
 import numpy as np
 import tempfile  # Para manejar archivos temporales
 from PIL import Image  # Para abrir y mostrar imágenes
-@st.cache_data
+
 def obtener_indicadores_compra2(ticker, period="1y", period1=None, umbral=1, dates=True):
     """
     Obtiene los datos históricos de un ticker y calcula los indicadores técnicos.
@@ -181,6 +181,7 @@ def compra_tickers2(tickers, chart=False, period="1y", period1=None, umbral=1, v
 url = 'https://raw.githubusercontent.com/hernanPabloPizarro/PrediccionMercadosFinancieros/main/syp500.csv'
 df_syp500 = pd.read_csv(url)
 acciones = df_syp500['Symbol'].tolist()
+acciones = acciones[0:15]  #borrar esta linea para las 500 acciones
 
 st.markdown("[Antes de usar esta app. Lea este Manual](https://github.com/hernanPabloPizarro/PrediccionMercadosFinancieros/blob/main/documentación.pdf)")
 st.title("Predictor de Acciones")
@@ -205,7 +206,6 @@ with st.container(border=True):
             datimba['Shift'] = datimba['Shift'].replace({1: 'compra', -1: 'venta'})
             datimba = datimba.rename(columns={'Shift': 'Señal'})
             datimba['Date'] = pd.to_datetime(datim['Date']).dt.date
-            #df['Date'] = pd.to_datetime(df['Date']).dt.date
             st.dataframe(datimba)
 
         if charto and not dat.empty:
@@ -217,47 +217,33 @@ with st.container(border=True):
                 st.write('Triángulo azul: momento relativo de bajo valor')
                 st.write('Triángulo verde: señal de compra')
                 st.write('Triángulo rojo: señal de venta')
-
+#--
+if 'datos_acciones' not in st.session_state:
+    st.session_state.datos_acciones = None
 
 with st.container(border=True):
     st.subheader('_Esta sección busca acciones por criterio_')
-    señal = st.selectbox('Seleccione la señal para filtrar:',['Sin criterio','Señal de baja', 'Compra', 'Venta'])
+    señal = st.selectbox('Seleccione la señal para filtrar:', ['Sin criterio', 'Señal de baja', 'Compra', 'Venta'])
     if señal == 'Señal de baja':
         umb = int(st.text_input("Umbral inferior?", value="0"))
     else:
         umb = 0
     if señal != 'Sin criterio':
         perid = int(st.text_input("Período anterior?   (0= último; 1=penúltimo)", value=0))
-        peride = (perid*-1)-1
+        peride = (perid * -1) - 1
     else:
-        peride=-1
-    
+        peride = -1
     if st.button("Cargar datos actuales"):
         placeholder = st.empty()
         placeholder.write('Cargando acciones, esto demora varios segundos...')
-        
-        # Inicializar la barra de progreso
         progreso = st.progress(0)
-        
-        reporte = []
         num_acciones = len(acciones)
+        datos_acciones = {}
+        
         for i in range(num_acciones):
             try:
                 e = compra_tickers2([acciones[i]], chart=False, period="6mo", period1=None, umbral=umb, vert_line_compra=None, dates=False)
-                if señal == 'Sin criterio':
-                    reporte.append(acciones[i])
-                
-                if señal == 'Señal de baja':
-                    if (e.iloc[peride]['Min-B.Inf'] < umb) and (e.iloc[peride]['Bll.inf_T'] < 0):
-                        reporte.append(acciones[i])
-
-                if señal == 'Compra':
-                    if e.iloc[peride]['shift']==1:
-                        reporte.append(acciones[i])
-
-                if señal == 'Venta':
-                    if e.iloc[peride]['Shift']==-1:
-                        reporte.append(acciones[i])
+                datos_acciones[acciones[i]] = e
 
             except Exception as e:
                 print(f'Error procesando {acciones[i]}: {e}')
@@ -265,18 +251,54 @@ with st.container(border=True):
             # Actualizar la barra de progreso
             progreso.progress((i + 1) / num_acciones)
 
-        st.write(f'Acciones encontradas: {len(reporte)}')
-        st.write(reporte)
+        # Guardar los datos en el estado de la sesión
+        st.session_state.datos_acciones = datos_acciones
+        
+        st.write(f'Acciones encontradas: {len(datos_acciones)}')
         placeholder.empty()
 
-        st.write('Triángulo azul: momento relativo de bajo valor')
-        st.write('Triángulo verde: señal de compra')
-        st.write('Triángulo rojo: señal de venta')
-        
+    if st.session_state.datos_acciones:
+        reporte = []
+        datos_acciones = st.session_state.datos_acciones
+        if st.button("Filtrar acciones"):
+            
+            
+            for accion, e in datos_acciones.items():
+                try:
+                    if señal == 'Sin criterio':
+                        reporte.append(accion)
+                    
+                    if señal == 'Señal de baja':
+                        if (e.iloc[peride]['Min-B.Inf'] < umb) and (e.iloc[peride]['Bll.inf_T'] < 0):
+                            reporte.append(accion)
+
+                    if señal == 'Compra':
+                        if e.iloc[peride]['shift'] == 1:
+                            reporte.append(accion)
+
+                    if señal == 'Venta':
+                        if e.iloc[peride]['Shift'] == -1:
+                            reporte.append(accion)
+
+                except Exception as e:
+                    print(f'Error filtrando {accion}: {e}')
+            
+            st.write(f'Acciones encontradas: {len(reporte)}')
+            reportero = pd.DataFrame(reporte, columns=['Symbol'])
+            repo = pd.merge(reportero, df_syp500[['Symbol', 'Security', 'GICS Sector']], how='left', on = 'Symbol')
+            repo.rename(columns={'Symbol':'Ticker', 'Security':'Nombre', 'GICS Sector':'Sector'}, inplace=True)
+            st.dataframe(repo)
+
+            st.write('Triángulo azul: momento relativo de bajo valor')
+            st.write('Triángulo verde: señal de compra')
+            st.write('Triángulo rojo: señal de venta')
+#--
         # Generar gráficos para cada acción en la lista reporte
         for ticker in reporte:
+            
             dat, señal, compra, venta = compra_tickers2([ticker], chart=True, period="1y", period1=None, umbral=int(umb), vert_line_compra=None, dates=True)
-
+            #plot_chart2(df, ticker, vert_line=fechas, vert_line_compra=fechasCompra, vert_line_venta=fechaVenta)
+            
             if not dat.empty:
                 image_path = plot_chart2(dat, ticker, vert_line=list(señal.values())[0], vert_line_compra=list(compra.values())[0], vert_line_venta=list(venta.values())[0])
                 if image_path:
