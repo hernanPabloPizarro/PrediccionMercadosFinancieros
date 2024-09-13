@@ -181,7 +181,7 @@ def compra_tickers2(tickers, chart=False, period="1y", period1=None, umbral=1, v
 url = 'https://raw.githubusercontent.com/hernanPabloPizarro/PrediccionMercadosFinancieros/main/syp500.csv'
 df_syp500 = pd.read_csv(url)
 acciones = df_syp500['Symbol'].tolist()
-acciones = acciones[0:15]  #borrar esta linea para las 500 acciones
+#acciones = acciones[0:15]  #borrar esta linea para cargar las 500 acciones
 
 st.markdown("[Antes de usar esta app. Lea este Manual](https://github.com/hernanPabloPizarro/PrediccionMercadosFinancieros/blob/main/documentación.pdf)")
 st.title("Predictor de Acciones")
