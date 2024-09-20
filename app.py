@@ -131,7 +131,7 @@ def plot_chart2(df, ticker, vert_line=None, vert_line_compra=None, vert_line_ven
             type='candle',
             style='charles',
             addplot=apds,
-            title=f'Gráfico de Compra para {ticker} con EMA, MACD, RSI y Bollinger Bands',
+            title=f'{ticker} con EMA, MACD, RSI y Bollinger Bands',
             ylabel='Precio',
             ylabel_lower='Indicadores',
             volume=True,
@@ -181,42 +181,49 @@ def compra_tickers2(tickers, chart=False, period="1y", period1=None, umbral=1, v
 url = 'https://raw.githubusercontent.com/hernanPabloPizarro/PrediccionMercadosFinancieros/main/syp500.csv'
 df_syp500 = pd.read_csv(url)
 acciones = df_syp500['Symbol'].tolist()
-#acciones = acciones[0:15]  #borrar esta linea para cargar las 500 acciones
+acciones = acciones[0:15]  #borrar esta linea para las 500 acciones
 
 st.markdown("[Antes de usar esta app. Lea este Manual](https://github.com/hernanPabloPizarro/PrediccionMercadosFinancieros/blob/main/documentación.pdf)")
 st.title("Predictor de Acciones")
 
 with st.container(border=True):
-    st.subheader('_Esta sección muestra información cada una acción_')
-    tic = st.text_input("ticker?", value="AAPL")
+    st.subheader('_Esta sección admite una o varias acciones_')
+    ticin = st.text_input("ticker?", value="AAPL")
+    tic = [tickeroso.strip() for tickeroso in ticin.split(',')]
     umbra = st.text_input("Umbral inferior", value=0)
     peripe = st.selectbox('periodo?',['1y', '6mo', '3mo', '1mo'])
-    #señal = st.selectbox('Seleccione la señal para filtrar:',['Señal de baja', 'Compra', 'Venta'])
+    
     charto = st.checkbox("Gráfico?")
     cuadro = st.checkbox("Tabla?")
 
     a = []
-    a.append(tic)
+    a+=tic
+    a = [x.upper() for x in a]
+    #b = ['a', 'b', 'c']
+    #b = [x.upper() for x in b]
     if st.button('Consultar'):
-        dat, señal, compra, venta = compra_tickers2(a, chart=charto, period=peripe, period1=None, umbral=int(umbra), vert_line_compra=None, dates=True)
-        if cuadro:
-            datim = dat.copy()
-            datim.reset_index(inplace=True)
-            datimba = datim[['Date','Open', 'High', 'Low', 'Close','MACD','Min-B.Inf','Shift']].copy()
-            datimba['Shift'] = datimba['Shift'].replace({1: 'compra', -1: 'venta'})
-            datimba = datimba.rename(columns={'Shift': 'Señal'})
-            datimba['Date'] = pd.to_datetime(datim['Date']).dt.date
-            st.dataframe(datimba)
+        st.write('Triángulo azul: momento relativo de bajo valor')
+        st.write('Triángulo verde: señal de compra')
+        st.write('Triángulo rojo: señal de venta')
+        for i in a:
+            dat, señal, compra, venta = compra_tickers2([i], chart=charto, period=peripe, period1=None, umbral=int(umbra), vert_line_compra=None, dates=True)
+            if cuadro:
+                datim = dat.copy()
+                datim.reset_index(inplace=True)
+                datimba = datim[['Date','Open', 'High', 'Low', 'Close','MACD','Min-B.Inf','Shift']].copy()
+                datimba['Shift'] = datimba['Shift'].replace({1: 'compra', -1: 'venta'})
+                datimba = datimba.rename(columns={'Shift': 'Señal'})
+                datimba['Date'] = pd.to_datetime(datim['Date']).dt.date
+                st.write(i)
+                st.dataframe(datimba)
 
-        if charto and not dat.empty:
-            image_path = plot_chart2(dat, a, vert_line=list(señal.values())[0], vert_line_compra=list(compra.values())[0], vert_line_venta=list(venta.values())[0])
+            if charto and not dat.empty:
+                image_path = plot_chart2(dat, i, vert_line=list(señal.values())[0], vert_line_compra=list(compra.values())[0], vert_line_venta=list(venta.values())[0])
 
-            if image_path:
-                image = Image.open(image_path)
-                st.image(image)
-                st.write('Triángulo azul: momento relativo de bajo valor')
-                st.write('Triángulo verde: señal de compra')
-                st.write('Triángulo rojo: señal de venta')
+                if image_path:
+                    image = Image.open(image_path)
+                    st.image(image)
+
 #--
 if 'datos_acciones' not in st.session_state:
     st.session_state.datos_acciones = None
