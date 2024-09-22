@@ -14,5 +14,6 @@ Cualquier comentario es bienvenido
 link de la app:
 https://prediccionmercadosfinancieros-6cppnyizkznokropw9neao.streamlit.app
 
-![Mi logo](image/Captura.jpg)
+Video explicativo: https://www.youtube.com/watch?v=40Zt8T35zb4&t=31s
+
 Vista general
