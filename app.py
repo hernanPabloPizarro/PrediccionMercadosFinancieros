@@ -278,7 +278,7 @@ with st.container(border=True):
                             reporte.append(accion)
 
                     if señal == 'Compra':
-                        if e.iloc[peride]['shift'] == 1:
+                        if e.iloc[peride]['Shift'] == 1:
                             reporte.append(accion)
 
                     if señal == 'Venta':
