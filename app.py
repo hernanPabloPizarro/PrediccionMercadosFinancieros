@@ -278,11 +278,12 @@ with st.container(border=True):
                             reporte.append(accion)
 
                     if señal == 'Compra':
-                        if e.iloc[peride]['Shift'] == 1:
+                        if (e.iloc[peride]['Shift'] == 1) and (e.iloc[peride]['MACD'] < e.iloc[peride]['Signal Line']):
                             reporte.append(accion)
 
+
                     if señal == 'Venta':
-                        if e.iloc[peride]['Shift'] == -1:
+                        if (e.iloc[peride]['Shift'] == -1) and (e.iloc[peride]['MACD'] > e.iloc[peride]['Signal Line']):
                             reporte.append(accion)
 
                 except Exception as e:
