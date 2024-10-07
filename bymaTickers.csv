@@ -1,0 +1,325 @@
+,Info,Ticker,Exchange,Ratio
+0,3M Company,MMM,NYSE,10:01:00
+1,Abbott Labs,ABT,NYSE,04:01:00
+2,AbbVie Inc.,ABBV,NYSE,10:01:00
+3,Abercrombie & Fitch Co,ANF,NYSE,01:01:00
+4,Accenture,ACN,NYSE,"3 days, 3:01:00"
+5,Adecoagro S.A.,ADGO,NYSE,01:01:00
+6,Adidas AG,ADS,XETRA,22:01:00
+7,Adobe Systems Incorporated,ADBE,NASDAQ,"1 day, 20:01:00"
+8,Adr Jumia Technologies Ag,JMIA,NYSE,01:01:00
+9,Advanced Auto Parts Inc,AAP,NYSE,14:01:00
+10,"Advanced Micro Devices, Inc.",AMD,NASDAQ,10:01:00
+11,Aegon N.V.,AEG,NYSE,01:01:00
+12,Agnico Eagle Mines Limited,AEM,NYSE,06:01:00
+13,Airbnb Inc ,ABNB,NASDAQ GS,15:01:00
+14,Alibaba Group Holding Limited,BABA,NYSE,09:01:00
+15,Alphabet Inc.,GOOGL,NASDAQ,"2 days, 10:01:00"
+16,Altaba Inc.,AABA,NASDAQ,03:01:00
+17,Altria Group Inc.,MO,NYSE,04:01:00
+18,Aluminum Corp Of China,AOCA,NYSE,01:01:00
+19,"Amazon.Com, Inc.",AMZN,NYSE,"6 days, 0:01:00"
+20,Ambev S.A.,ABEV,NASDAQ,01:03:00
+21,America Movil,AMX,NYSE,01:01:00
+22,American Airlines Group Inc,AAL,NASDAQ,02:01:00
+23,American Express Co,AXP,NYSE,15:01:00
+24,American International Group (AIG),AIG,NYSE,05:01:00
+25,Amgen Inc.,AMGN,NASDAQ,"1 day, 6:01:00"
+26,Analog Devices,ADI,NASDAQ,15:01:00
+27,Apple Inc.,AAPL,NASDAQ,20:01:00
+28,Applied Materials Inc.,AMAT,NASDAQ,05:01:00
+29,Arcos Dorados Holdings Inc.,ARCO,NYSE,01:02:00
+30,ARK INNOVATION ARKK,ARKK,NYSE Arca,10:01:00
+31,Astrazeneca Plc,AZN,NYSE,02:01:00
+32,At &T Inc.,T,NYSE,03:01:00
+33,Automatic Data Processing Inc.,ADP,NASDAQ,06:01:00
+34,Avery Dennison Corp.,AVY,NYSE,18:01:00
+35,Avis Budget Group Inc.,CAR,NASDAQ,"1 day, 2:01:00"
+36,"Baidu, Inc.",BIDU,NASDAQ,11:01:00
+37,Banco Bradesco S.A.,BBD,NYSE,01:01:00
+38,Banco do Brasil S.A.,BBAS3,B3,02:01:00
+39,Banco Santander (Brasil) S.A.,BSBR,NYSE,01:01:00
+40,Banco Santander S.A,SAN,NYSE,01:04:00
+41,Bank Of America Corporation,BA.C,NYSE,04:01:00
+42,Barclays Bank Plc,BCS,NYSE,01:01:00
+43,Barrick Gold Corp,GOLD,NYSE,02:01:00
+44,Basf SE,BAS,FRANKFURT,02:01:00
+45,Bayer AG,BAYN,FRANKFURT,03:01:00
+46,Berkshire Hathaway Inc.,BRKB,NYSE,22:01:00
+47,Bhp Group Ltd,BHP,NYSE,02:01:00
+48,Bilbao Vizcaya Argentaria S.A.,BBV,NYSE,01:01:00
+49,Bioceres Crop Solutions Corp. ,BIOX,NYSE American,01:01:00
+50,Biogen Inc.,BIIB,NASDAQ,13:01:00
+51,Bitfarms Ltd.,BITF,NASDAQ GM,01:05:00
+52,Blackberry Limited,BB,NASDAQ,03:01:00
+53,Booking,BKNG,NASDAQ,"29 days, 4:01:00"
+54,BP PCL,BP,NYSE,05:01:00
+55,Brasilagro - Co Brasileira de Propriedades AgrÃ­colas,LND,NYSE,01:01:00
+56,Braskem SA,BAK,NYSE,02:01:00
+57,BRF S.A.,BRFS,NYSE,01:03:00
+58,Bristol-Myers Squibb Company,BMY,NYSE,03:01:00
+59,Broadcom Inc.,AVGO,NASDAQ,"1 day, 15:01:00"
+60,Bunge Limited,BNG,NYSE,05:01:00
+61,Canon Inc,CAJ,NYSE,02:01:00
+62,Cardinal Health Inc,CAH,NYSE,03:01:00
+63,Carnival,CCL,NYSE,03:01:00
+64,Caterpillar Inc,CAT,NYSE,20:01:00
+65,Cemex S.A.B. de CV,CX,NYSE,01:01:00
+66,Centrais ElÃ©ctricas Brasileiras S.A. - Eletrobras,EBR,NYSE,01:04:00
+67,Charles Schwab,SCHW,NYSE,13:01:00
+68,Chevron Corp.,CVX,NYSE,16:01:00
+69,China Life Insurance,LFC,NYSE,02:01:00
+70,China Petroleum & Chem,SNP,NYSE,03:01:00
+71,Cisco Systems Inc,CSCO,NASDAQ,05:01:00
+72,Citigroup Inc,C,NYSE,03:01:00
+73,"Coca-Cola Femsa, S.A.B. De C.V.",KOFM,NYSE,02:01:00
+74,Coeur Mining Inc.,CDE,NYSE,01:01:00
+75,Coinbase Global Inc,COIN,NASDAQ,"1 day, 3:01:00"
+76,Colgate Palmolive Co,CL,NYSE,03:01:00
+77,Companhia Brasileira De Dis NPV ADR,CBRD,NYSE,01:01:00
+78,Companhia de Saneamento Básico do Estado de São Paulo–Sabesp,SBS,NYSE,01:02:00
+79,Companhia Paranaense de EnergÃ­a - COPEL,ELP,NYSE,01:03:00
+80,Companhia SiderÃºrgica Nacional,SID,NYSE,01:08:00
+81,Corning Inc.,GLW,NYSE,04:01:00
+82,CorporaciÃ³n America Airports S.A.,CAAP,NYSE,01:04:00
+83,Costco Wholesale Corp,COST,NASDAQ,"2 days, 0:01:00"
+84,Credit Suisse Group,CS,NYSE,01:01:00
+85,CVS Health,CVS,NYSE,15:01:00
+86,Danone,BSN,FRANKFURT,20:01:00
+87,Deere & Co.,DE,NYSE,"1 day, 16:01:00"
+88,Delta Air Lines,DAL,NYSE,08:01:00
+89,"Despegar.Com, Corp.",DESP,NYSE,01:01:00
+90,Deutsche Telekom Ag DTEA,OTC,US,03:01:00
+91,Diageo PLC,DEO,NYSE,06:01:00
+92,DocuSign Inc.,DOCU,NASDAQ,22:01:00
+93,DOW Inc,DOW,NYSE,06:01:00
+94,Dupont de Nemours Inc.,DD,NYSE,05:01:00
+95,E.On Se,EOAN,FRANKFURT,06:01:00
+96,Ebay Inc.,EBAY,NASDAQ,02:01:00
+97,Electronic Arts Inc,EA,NASDAQ,14:01:00
+98,Eli Lilly and Company,LLY,NYSE,"2 days, 8:01:00"
+99,Embotelladora Andina S.A.,AKO.B,NYSE,01:01:00
+100,Embraer-Empresa Brasileira de AeronÃ¡utica S.A.,ERJ,NYSE,01:01:00
+101,ENERGY SELECT SECTOR SPDR FUND,XLE,NYSE Arca,02:01:00
+102,Eni Spa,E,NYSE,04:01:00
+103,Equifax Inc.,EFX,NYSE,16:01:00
+104,Etsy Inc.,ETSY,NASDAQ,16:01:00
+105,Exxon Mobil Corporation,XOM,NYSE,10:01:00
+106,"Fed. Natl, Mortgage - Fannie Mae",FNMA,OTC,01:01:00
+107,Fedex Corp,FDX,NYSE,10:01:00
+108,Ferrari,RACE,NYSE,"3 days, 11:01:00"
+109,FINANCIAL SELECT SECTOR SPDR FUND,XLF,NYSE Arca,02:01:00
+110,First Solar Inc.,FSLR,NASDAQ,18:01:00
+111,Fomento Economico Mexicano - Femsa,FMX,NYSE,06:01:00
+112,Ford Motor Company,F,NYSE,01:01:00
+113,Freddie Mac (Federal Home Loan),FMCC,OTC,01:01:00
+114,Freeport Mcmoran Copper & Gold Inc.,FCX,NYSE,03:01:00
+115,Garmin Ltd.,GRMN,NASDAQ,03:01:00
+116,General Electric Co.,GE,NYSE,08:01:00
+117,General Motors Co,GM,NYSE,06:01:00
+118,Geopark Ltd. GPRK,GPRK,NYSE,01:01:00
+119,Gerdau S.A.,GGB,NYSE,01:04:00
+120,"Gilead Sciences, Inc.",GILD,NASDAQ,04:01:00
+121,Globant S.A.,GLOB,NYSE,18:01:00
+122,Gold Fields Ltd.,GFI,NYSE,01:01:00
+123,"Grupo Aeroportuario del Pacifico, S.A.B. de C.V.",PAC,NYSE,16:01:00
+124,"Grupo Aeroportuario Del Sureste , S.A.B. de C.V.",ASR,NYSE,20:01:00
+125,Grupo Televisa S.A.,TV,NYSE,03:01:00
+126,GSK Plc.,GSK,NYSE,04:01:00
+127,Halliburton Co.,HAL,NYSE,02:01:00
+128,Hapvida Participacoes E Investimentos S.A.,HAPV3,B3,01:01:00
+129,Harley-Davidson Inc.,HOG,NYSE,03:01:00
+130,Harmony Gold Mining Company Ltd.,HMY,NYSE,01:01:00
+131,Hdfc Bank Limited.,HDB,NYSE,02:01:00
+132,Hecla Mining Co .,HL,NYSE,01:01:00
+133,Hon Hai Precision Industry Co. Ltd.,HHPD,LONDON STOCK EXCHANGE,02:01:00
+134,Honda Motor Co. Ltd,HMC,NYSE,01:01:00
+135,Honeywell International Inc.,HON,NYSE,08:01:00
+136,Howmet Aerospace Inc.,HWM,NYSE,01:01:00
+137,Hp Inc,HPQ,NYSE,01:01:00
+138,Hsbc Holdings Plc,HSBC,NYSE,02:01:00
+139,Huaneng Power Intl,HNPIY,NYSE,01:01:00
+140,Hut 8 Mining Corp. HUT,HUT,NASDAQ GS,01:05:00
+141,Icici Bank Ltd.,IBN,NYSE,01:01:00
+142,Infosys Limited,INFY,NASDAQ,01:01:00
+143,Ing Groep Nv,ING,NYSE,03:01:00
+144,Intel Corporation,INTC,NASDAQ,05:01:00
+145,International Business Machines,IBM,NYSE,15:01:00
+146,International Flavors & Fragrances Inc.,IFF,NYSE,12:01:00
+147,International Paper Co.,IP,NYSE,04:01:00
+148,INVESCO QQQ TRUST,QQQ,NASDAQ,20:01:00
+149,ISHARES MSCI BRAZIL CAP EWZ,EWZ,NYSE Arca,02:01:00
+150,ISHARES MSCI EMERGING MARKET,EEM,NYSE Arca,05:01:00
+151,ISHARES TRUST RUSSELL 2000 IWM,IWM,NYSE Arca,10:01:00
+152,ItaÃº Unibanco Holding S.A.,ITUB,NYSE,01:01:00
+153,J.P. Morgan & Chase Co.,JPM,NYSE,15:01:00
+154,"Jd.Com, Inc.",JD,NASDAQ,04:01:00
+155,Johnson & Johnson,JNJ,NYSE,15:01:00
+156,Johnson Controls International,JCI,NYSE,02:01:00
+157,JOYY Inc.,YY,NASDAQ,05:01:00
+158,Kb Financial Group Inc.,KB,NYSE,02:01:00
+159,Kimberly-Clark Corp.,KMB,NYSE,06:01:00
+160,Kinross Gold Corp,KGC,NYSE,01:01:00
+161,Koninklijke Philips N.V.,PHG,NYSE,05:01:00
+162,Korea Electric Power Corp.,KEP,NYSE,01:01:00
+163,Lam Research Corp,LRCX,NASDAQ,"2 days, 8:01:00"
+164,Las Vegas Sands Corp,LVS,NYSE,02:01:00
+165,Lithium Americas Corp,LAC,NYSE,01:01:00
+166,Lloyds Banking Group Plc,LYG,NYSE,02:01:00
+167,Lm Ericsson Telephone Co.,ERIC,NASDAQ,02:01:00
+168,Localiza Rent A Car S.A.,RENT3,B3,02:01:00
+169,Lockheed Martin Corporation,LMT,NYSE,20:01:00
+170,Lojas Renner S.A.,LREN3,B3,01:01:00
+171,Magazine Luiza S.A.,MGLU3,B3,01:01:00
+172,Marsh & Mclennan Companies Inc.,MMC,NYSE,16:01:00
+173,Marvell Technology Inc,MRVL,NASDAQ,14:01:00
+174,Mastercard Inc. MA,MA,NYSE,"1 day, 9:01:00"
+175,Mcdonald'S Corp.,MCD,NYSE,"1 day, 0:01:00"
+176,McEwen Mining Inc,MUX,NYSE,02:01:00
+177,Medtronic Public Limited Company,MDT,NYSE,04:01:00
+178,Mercadolibre Inc.,MELI,NASDAQ,"5 days, 0:01:00"
+179,Mercedes-Benz Group AG,MBG,FRANKFURT,04:01:00
+180,Merck & Co. Inc.,MRK,NYSE,05:01:00
+181,Meta Platforms Inc,META,NASDAQ,"1 day, 0:01:00"
+182,Micron Technology Inc,MU,NASDAQ GS,05:01:00
+183,Microsoft Corp.,MSFT,NASDAQ,"1 day, 6:01:00"
+184,Microstrategy Inc Cl A New   MSTR,MSTR,NASDAQ GS,20:01:00
+185,Mitsubishi Ufj Financial Group,MUFG,NYSE,01:01:00
+186,Mizuho Financial Group,MFG,NYSE,01:01:00
+187,Mobile Telesystems,MBT,NYSE,02:01:00
+188,Moderna Inc,MRNA,NASDAQ,19:01:00
+189,Mondelez,MDLZ,NASDAQ,15:01:00
+190,"Motorola Solutions, Inc.",MSI,NYSE,20:01:00
+191,National Grid Plc,NGG,NYSE,02:01:00
+192,Natura & Co Holding S.A.,NTCO,NYSE,01:01:00
+193,Nec Corporation,NEC1,FRANKFURT,01:03:00
+194,"Netease, Inc",NTES,NASDAQ,14:01:00
+195,"Netflix, Inc.",NFLX,NASDAQ,"2 days, 0:01:00"
+196,Newmont Corporation,NEM,NYSE,03:01:00
+197,Nike Inc.,NKE,NYSE,12:01:00
+198,NIO Inc.,NIO,NYSE,04:01:00
+199,"Nissan Motor Co., Ltd NSAN",OTC,US,01:01:00
+200,Nokia Corporation,NOKA,NYSE,01:01:00
+201,"Nomura Holdings, Inc",NMR,NYSE,01:01:00
+202,Novagold Resources INC.,NG,NYSE,01:04:00
+203,Novartis Ag,NVS,NYSE,04:01:00
+204,Novolipetsk Steel PJSC,NLM,LONDON STOCK EXCHANGE,02:01:00
+205,NU Holdings Ltd/Cayman Islands,UN,NYSE,02:01:00
+206,Nucor Corp,NUE,NYSE,16:01:00
+207,Nvidia Corporation,NVDA,NASDAQ,"1 day, 0:01:00"
+208,Occidental Petroleum Corp.,OXY,NYSE,05:01:00
+209,Oracle Corporation,ORCL,NYSE,03:01:00
+210,Orange S.A.,ORAN,NYSE,01:01:00
+211,Paccar Inc.,PCAR,NASDAQ,03:01:00
+212,Pagseguro Digital Ltd,PAGS,NYSE,03:01:00
+213,Palantir Technologies Inc,PLTR,NYSE,03:01:00
+214,Palo Alto Networks Inc,PANW,NASDAQ GS,"2 days, 2:01:00"
+215,Pan American Silver Corp.,PAAS,NASDAQ,03:01:00
+216,Panasonic Corporation PCRF,OTC,US,02:01:00
+217,"Paypal Holdings, Inc.",PYPL,NASDAQ,08:01:00
+218,Pearson Plc,PSO,NYSE,01:01:00
+219,Pepsico Inc,PEP,NASDAQ,18:01:00
+220,Petrobras (ADR),PBR,NYSE,01:01:00
+221,Petrochina Co Ltd,PTR,NYSE,04:01:00
+222,Petro Rio S.A.,PRIO3,B3,02:01:00
+223,Pfizer Inc.,PFE,NYSE,04:01:00
+224,Philip Morris International,PM,NYSE,18:01:00
+225,Phillips 66,PSX,NYSE,06:01:00
+226,Pinterest,PINS,NYSE,07:01:00
+227,Pitney Bowes Inc,PBI,NYSE,01:01:00
+228,Pjsc Gazprom,OGZD,LONDON STOCK EXCHANGE,02:01:00
+229,Pjsc Lukoil,LKOD,LONDON STOCK EXCHANGE,04:01:00
+230,Pjsc Tatneft,ATAD,LONDON STOCK EXCHANGE,04:01:00
+231,Posco Holdings Inc.,PKS,NYSE,03:01:00
+232,Procter & Gamble,PG,NYSE,15:01:00
+233,Qualcomm Inc.,QCOM,NASDAQ,11:01:00
+234,Raytheon Technologies Corp,RTX,NYSE,05:01:00
+235,Rio Tinto Plc,RIO,NYSE,08:01:00
+236,Riot Platforms,RIOT,NASDAQ,03:01:00
+237,Roblox Corp.,RBLX,NYSE,02:01:00
+238,Roku,ROKU,NASDAQ,13:01:00
+239,"Ross Stores, Inc.",ROST,NASDAQ,04:01:00
+240,Royal Dutch Shell Plc,SHEL,NYSE,02:01:00
+241,S&P Global Inc,SPGI,NYSE,"1 day, 21:01:00"
+242,Salesforce Inc.,CRM,NYSE,18:01:00
+243,Samsung Electronics Co. Ltd.,SMSN,,14:01:00
+244,Sap Se,SAP,NYSE,06:01:00
+245,Satellogic Inc.,SATL,NASDAQ GS,01:01:00
+246,Schlumberger Ltd,SLB,NYSE,03:01:00
+247,Sea Ltd.,SE,NYSE,"1 day, 8:01:00"
+248,Shapeways Holdings Inc,SHPW,NYSE,01:02:00
+249,Shopify Inc.,SHOP,NYSE,"4 days, 11:01:00"
+250,Siemens Ag Adr,SIEGY,OTC,03:01:00
+251,Silvergate Bancorp,SI,NYSE,10:01:00
+252,Skyworks Solutions,SWKS,NASDAQ,21:01:00
+253,Snap Inc.,SNAP,NYSE,01:01:00
+254,Snap-On Inc,SNA,NYSE,06:01:00
+255,Snowflake Inc.,SNOW,NYSE,"1 day, 6:01:00"
+256,Sony Group Corporation,SONY,NYSE,08:01:00
+257,Southern Copper Corp,SCCO,NYSE,02:01:00
+258,SPDR DOW JONES INDUSTRIAL,DIA,NYSE Arca,20:01:00
+259,SPDR S&P 500 SPY,SPY,NYSE Arca,20:01:00
+260,Spotify Technology S.A.,SPOT,NYSE,"1 day, 4:01:00"
+261,Square Inc.,SQ,NYSE,20:01:00
+262,Starbucks Corporation,SBUX,NASDAQ,12:01:00
+263,Stellantis,STLA,NYSE,05:01:00
+264,StoneCo Ltd,STNE,NASDAQ,03:01:00
+265,SunCar Technology Group Inc,SDA,NASDAQ,02:01:00
+266,Suzano Papel E Celulose S.A.,SUZ,NYSE,01:01:00
+267,Sysco Corp.,SYY,NYSE,08:01:00
+268,Taiwan Semiconductor Manufacturing,TSM,NYSE,09:01:00
+269,Target Corporation,TGT,NYSE,"1 day, 0:01:00"
+270,Tata Motors Ltd,TTM,NYSE,01:01:00
+271,Telebras PN,RCTB4,BOVESPA,0.7361111111111112
+272,Telecom Italia S.P.A. Ordinary Shares,TIIAY,NYSE,01:01:00
+273,TelefÃ´nica Brasil S.A.,VIV,NYSE,01:01:00
+274,Telefonica S.A.,TEFO,NYSE,08:01:00
+275,Tenaris,TEN,NYSE,01:01:00
+276,Ternium S.A.,TXR,NYSE,04:01:00
+277,"Tesla, Inc.",TSLA,NASDAQ,15:01:00
+278,Texas Instruments Inc,TXN,NASDAQ,05:01:00
+279,The Bank Of New York Mellon Corp.,BK,NYSE,02:01:00
+280,The Boeing Company,BA,NYSE,"1 day, 0:01:00"
+281,The Coca Cola Company,KO,NYSE,05:01:00
+282,"The Goldman Sachs Group, Inc",GS,NYSE,13:01:00
+283,The Hershey Company,HSY,NYSE,21:01:00
+284,The Home Depot Inc.,HD,NYSE,"1 day, 8:01:00"
+285,The Mosaic Co,MOS,NYSE,05:01:00
+286,The Travelers Cos. Inc.,TRVV,NYSE,06:01:00
+287,The Walt Disney Co.,DISN,NYSE,12:01:00
+288,Thermo Fisher Scientific Inc.,TMO,NYSE,22:01:00
+289,Tim ParticipaÃ§Ãµes S.A.,TIMB,NYSE,01:01:00
+290,T-mobile,TMUS,NASDAQ,"1 day, 9:01:00"
+291,TotalEnergies SE,TTE,NYSE,03:01:00
+292,Toyota Motor Corporation,TM,NYSE,15:01:00
+293,TRIP.COM Group Ltd.,TCOM,NASDAQ,02:01:00
+294,"Tripadvisor, Inc.",TRIP,NASDAQ,02:01:00
+295,Twilio Inc,TWLO,NYSE,"1 day, 12:01:00"
+296,"Twitter, Inc.",TWTR,NYSE,02:01:00
+297,U.S. Bancorp,USB,NYSE,05:01:00
+298,Uber Technologies Inc.,UBER,NYSE,02:01:00
+299,Ultrapar ParticipaÃ§Ãµes S.A.,UGP,NYSE,01:01:00
+300,Unilever PLC - Sponsored,UL,NYSE,03:01:00
+301,Union Pacific Corp.,UNP,NYSE,20:01:00
+302,United Airlines Holdings Inc. UAL,UAL,NASDAQ GS,05:01:00
+303,United States Steel Corp.,X,NYSE,03:01:00
+304,UnitedHealth Group Inc.,UNH,NYSE,"1 day, 9:01:00"
+305,Upstart Hldgs Inc UPST,UPST,NASDAQ GS,05:01:00
+306,Urban Outfitters INC.,URBN,NASDAQ,02:01:00
+307,Vale S.A.,VALE,NYSE,02:01:00
+308,"Verisign, Inc.",VRSN,-,06:01:00
+309,Verizon Communications Inc.,VZ,NYSE,04:01:00
+310,Virgin Galactic,SPCE,NYSE,01:02:00
+311,Visa Inc,V,NYSE,18:01:00
+312,Vista Energy S.A.B. de C.V.,VIST,NYSE,03:01:00
+313,Vodafone Group Plc,VOD,NASDAQ,01:01:00
+314,Walgreens Boots Alliance Inc.,WBA,NASDAQ,03:01:00
+315,Walmart Inc.,WMT,NYSE,18:01:00
+316,Weibo Corporation,WBO,NASDAQ,06:01:00
+317,Wells Fargo & Co.,WFC,NYSE,05:01:00
+318,Xerox Holding Corporation,XROX,NYSE,01:01:00
+319,XP Inc,XP,NASDAQ,04:01:00
+320,Yamana Gold Inc.,AUY,NYSE,01:01:00
+321,Yanzhou Coal Mining Co. Ltd. YZCA,OTC,US,02:01:00
+322,Yelp Inc.,YELP,NYSE,02:01:00
+323,Zoom Video Communications Inc.,ZM,NASDAQ,"1 day, 23:01:00"
