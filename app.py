@@ -183,6 +183,11 @@ df_syp500 = pd.read_csv(url)
 acciones = df_syp500['Symbol'].tolist()
 #acciones = acciones[0:15]  #borrar esta linea para las 500 acciones
 
+urlbyma = 'https://raw.githubusercontent.com/hernanPabloPizarro/PrediccionMercadosFinancieros/refs/heads/main/bymaTickers.csv'
+byma = pd.read_csv(urlbyma)
+cedears = byma['Ticker'].tolist()
+#cedears = cedears[0:15]  #borrar esta linea para las 500 acciones
+
 st.markdown("[Antes de usar esta app. Lea este Manual](https://github.com/hernanPabloPizarro/PrediccionMercadosFinancieros/blob/main/documentación.pdf)")
 st.title("Predictor de Acciones")
 
@@ -238,20 +243,31 @@ with st.container(border=True):
         peride = (perid * -1) - 1
     else:
         peride = -1
+    indice = st.selectbox('Seleccione índice (grupo de acciones a consultar):', ['BYMA','S&P500'])
     if st.button("Cargar datos actuales"):
         placeholder = st.empty()
         placeholder.write('Cargando acciones, esto demora varios segundos...')
         progreso = st.progress(0)
-        num_acciones = len(acciones)
+        if indice == 'S&P500':
+            num_acciones = len(acciones)
+        if indice == 'BYMA':
+            num_acciones = len(cedears)
         datos_acciones = {}
         
         for i in range(num_acciones):
             try:
+              if indice == 'S&P500':
                 e = compra_tickers2([acciones[i]], chart=False, period="6mo", period1=None, umbral=umb, vert_line_compra=None, dates=False)
                 datos_acciones[acciones[i]] = e
+              if indice == 'BYMA':
+                e = compra_tickers2([cedears[i]], chart=False, period="6mo", period1=None, umbral=umb, vert_line_compra=None, dates=False)
+                datos_acciones[cedears[i]] = e
 
             except Exception as e:
+              if indice == 'S&P500':
                 print(f'Error procesando {acciones[i]}: {e}')
+              if indice == 'BYMA':
+                print(f'Error procesando {cedears[i]}: {e}')
             
             # Actualizar la barra de progreso
             progreso.progress((i + 1) / num_acciones)
