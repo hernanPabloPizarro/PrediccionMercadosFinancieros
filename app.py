@@ -7,6 +7,7 @@ import tempfile  # Para manejar archivos temporales
 from PIL import Image  # Para abrir y mostrar imágenes
 
 def obtener_indicadores_compra2(ticker, period="1y", period1=None, umbral=1, dates=True):
+
     """
     Obtiene los datos históricos de un ticker y calcula los indicadores técnicos.
 
@@ -20,7 +21,6 @@ def obtener_indicadores_compra2(ticker, period="1y", period1=None, umbral=1, dat
     Returns:
     pd.DataFrame: DataFrame con los datos históricos y los indicadores técnicos.
     """
-    #fechas, fechasCompra, fechaVenta = [], [], []
     try:
         stock = yf.Ticker(ticker)
         if period1:
@@ -46,6 +46,10 @@ def obtener_indicadores_compra2(ticker, period="1y", period1=None, umbral=1, dat
         # Calcular MACD
         df['MACD'] = df['Close'].ewm(span=12, adjust=False).mean() - df['Close'].ewm(span=26, adjust=False).mean()
         df['Signal Line'] = df['MACD'].ewm(span=9, adjust=False).mean()
+        df['Histo'] = df['MACD'] - df['Signal Line']
+        df['Histo_P'] = df['Histo'] - df['Histo'].shift(1)
+        df['MACD_P'] = df['MACD'] - df['MACD'].shift(1)
+        df['P(MACD-Histo)'] = df['MACD_P'] - df['Histo_P']
 
         # Calcular Bandas de Bollinger
         df['bll_sup'] = df['Close'].rolling(window=20).mean() + 2 * df['Close'].rolling(window=20).std()
@@ -76,7 +80,7 @@ def obtener_indicadores_compra2(ticker, period="1y", period1=None, umbral=1, dat
     else:
         return df
 
-def plot_chart2(df, ticker, vert_line=None, vert_line_compra=None, vert_line_venta=None):
+def plot_chart2(df, ticker, vert_line=None, vert_line_compra=None, vert_line_venta=None, vertical=None):
     """
     Grafica los datos históricos y los indicadores técnicos.
 
@@ -89,22 +93,26 @@ def plot_chart2(df, ticker, vert_line=None, vert_line_compra=None, vert_line_ven
         print(f"No hay datos para graficar para el ticker {ticker}.")
         return
 
-    #Configurar subplots para MACD y RSI
+    # Configurar subplots para MACD y RSI
     apds = [
         mpf.make_addplot(df['EMA50'], color='blue', panel=0),
         mpf.make_addplot(df['EMA200'], color='red', panel=0),
+        mpf.make_addplot(df['bll_sup'], color='purple', panel=0, linestyle='--'),
+        mpf.make_addplot(df['bll_inf'], color='purple', panel=0, linestyle='--'),
         mpf.make_addplot(df['MACD'], panel=1, color='purple'),
         mpf.make_addplot(df['Signal Line'], panel=1, color='orange'),
-        mpf.make_addplot(df['RSI'], panel=2, color='green'),
-        mpf.make_addplot(df['RSI-EMA6'], panel=2, color='#000033', alpha=0.7),
-        mpf.make_addplot([70] * len(df), panel=2, color='r', linestyle='--'),
-        mpf.make_addplot([50] * len(df), panel=2, color='#000000', linestyle='--'),
-        mpf.make_addplot([30] * len(df), panel=2, color='g', linestyle='--'),
-        mpf.make_addplot(df['bll_sup'], color='purple', panel=0, linestyle='--'),
-        mpf.make_addplot(df['bll_inf'], color='purple', panel=0, linestyle='--')
-    ]
+        mpf.make_addplot([0] * len(df), panel=1, color='#000000', linestyle='--'),
+        mpf.make_addplot(df['Histo'], panel=2, color='blue', alpha=0.7),
+        mpf.make_addplot(df['MACD_P'], panel=2, color='black', alpha=0.7, linestyle='--'),
+        mpf.make_addplot(df['Histo_P'], panel=2, color='red', alpha=0.7, linestyle='--'),
+        mpf.make_addplot([0] * len(df), panel=2, color='#000000', linestyle='--'),
+        mpf.make_addplot(df['RSI'], panel=3, color='green'),
+        mpf.make_addplot(df['RSI-EMA6'], panel=3, color='#000033', alpha=0.7),
+        mpf.make_addplot([70] * len(df), panel=3, color='r', linestyle='--'),
+        mpf.make_addplot([50] * len(df), panel=3, color='#000000', linestyle='--'),
+        mpf.make_addplot([30] * len(df), panel=3, color='g', linestyle='--')]
 
-    #Agregar líneas verticales en las fechas especificadas
+    # Agregar vertices en las fechas especificadas
     if vert_line:
         for date in vert_line:
             if date in df.index:
@@ -115,32 +123,45 @@ def plot_chart2(df, ticker, vert_line=None, vert_line_compra=None, vert_line_ven
         for date in vert_line_compra:
             if date in df.index:
                 vert_line_series_compra = pd.Series(np.nan, index=df.index)
-                vert_line_series_compra.loc[date] = df['Close'].max()-2
+                vert_line_series_compra.loc[date] = df['Close'].max() - 2
                 apds.append(mpf.make_addplot(vert_line_series_compra, type='scatter', markersize=200, marker='v', color='green'))
 
         for date in vert_line_venta:
             if date in df.index:
                 vert_line_series_venta = pd.Series(np.nan, index=df.index)
-                vert_line_series_venta.loc[date] = df['Close'].max()-4
+                vert_line_series_venta.loc[date] = df['Close'].max() - 4
                 apds.append(mpf.make_addplot(vert_line_series_venta, type='scatter', markersize=200, marker='v', color='red'))
 
-    #Gráfico de precios con los indicadores
-    with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmpfile:
-        mpf.plot(
-            df,
-            type='candle',
-            style='charles',
-            addplot=apds,
-            title=f'{ticker} con EMA, MACD, RSI y Bollinger Bands',
-            ylabel='Precio',
-            ylabel_lower='Indicadores',
-            volume=True,
-            figscale=2,
-            savefig=tmpfile.name
-        )
-        return tmpfile.name  # Retornar la ruta del archivo
+    # Crear y mostrar el gráfico
+    fig, axes = mpf.plot(df,
+                         type='candle',
+                         style='charles',
+                         addplot=apds,
+                         title=f'Gráfico de Compra para {ticker} con EMA, MACD, RSI y Bollinger Bands',        
+                         ylabel='Precio',        
+                         ylabel_lower='Indicadores',        
+                         volume=True,  # volumen        
+                         figscale=2,        
+                         returnfig=True    )
 
-def compra_tickers2(tickers, chart=False, period="1y", period1=None, umbral=1, vert_line_compra=None, dates=True):
+   # Si 'vertical' está definido, agregar las líneas verticales en cada panel
+    if vertical:
+        # Obtener el penúltimo registro
+        registro = df.index[vertical]
+        xloc = df.index.get_loc(registro)
+        fecha = df.index[vertical].strftime('%d-%m-%y')
+
+        # Agregar líneas verticales en cada panel (velas, MACD, RSI)
+        for ax in axes:
+            ax.axvline(x=xloc, color='black', linestyle='--', linewidth=0.5, label=f'Fecha: {fecha}')
+
+        # Mostrar la leyenda solo en el primer eje (velas japonesas)
+        axes[0].legend()
+
+    st.pyplot(fig)
+
+
+def compra_tickers3(tickers, chart=False, period="1y", period1=None, umbral=1, vert_line_compra=None, dates=True, vertical=None):
     """
     Procesa una lista de tickers, obtiene indicadores, grafica los datos y maneja errores.
 
@@ -159,6 +180,8 @@ def compra_tickers2(tickers, chart=False, period="1y", period1=None, umbral=1, v
     for ticker in tickers:
         print(f"{ticker}")
         try:
+            # if Ticker in dicto:  (código de comprobación aquí)
+            #   df = dicto[ticker]
             if dates:
                 df, fechas, fechasCompra, fechaVenta = obtener_indicadores_compra2(ticker, period=period, period1=period1, umbral=umbral, dates=dates)
                 all_dates[ticker] = [date.strftime('%Y-%m-%d') for date in fechas]
@@ -169,7 +192,7 @@ def compra_tickers2(tickers, chart=False, period="1y", period1=None, umbral=1, v
                 df = obtener_indicadores_compra2(ticker, period=period, period1=period1, umbral=umbral, dates=dates)
 
             if not df.empty and chart:
-                plot_chart2(df, ticker, vert_line=fechas, vert_line_compra=fechasCompra, vert_line_venta=fechaVenta)
+                plot_chart2(df, ticker, vert_line=fechas, vert_line_compra=fechasCompra, vert_line_venta=fechaVenta, vertical=vertical)
         except Exception as e:
             print(f'Error procesando {ticker}: {e}')
 
@@ -177,6 +200,7 @@ def compra_tickers2(tickers, chart=False, period="1y", period1=None, umbral=1, v
         return df, all_dates, all_datesen, all_datesenon
     else:
         return df
+
 
 url = 'https://raw.githubusercontent.com/hernanPabloPizarro/PrediccionMercadosFinancieros/main/syp500.csv'
 df_syp500 = pd.read_csv(url)
@@ -186,7 +210,7 @@ acciones = df_syp500['Symbol'].tolist()
 urlbyma = 'https://raw.githubusercontent.com/hernanPabloPizarro/PrediccionMercadosFinancieros/refs/heads/main/bymaTickers.csv'
 byma = pd.read_csv(urlbyma)
 cedears = byma['Ticker'].tolist()
-#cedears = cedears[0:15]  #borrar esta linea para las 500 acciones
+#cedears = cedears[0:5]  #borrar esta linea para las 500 acciones
 
 st.markdown("[Antes de usar esta app. Lea este Manual](https://github.com/hernanPabloPizarro/PrediccionMercadosFinancieros/blob/main/documentación.pdf)")
 st.title("Predictor de Acciones")
@@ -196,7 +220,7 @@ with st.container(border=True):
     ticin = st.text_input("ticker?", value="AAPL")
     tic = [tickeroso.strip() for tickeroso in ticin.split(',')]
     umbra = st.text_input("Umbral inferior", value=0)
-    peripe = st.selectbox('periodo?',['1y', '6mo', '3mo', '1mo'])
+    peripe = st.selectbox('período?',['1y', '6mo', '3mo', '1mo'])
     
     charto = st.checkbox("Gráfico?")
     cuadro = st.checkbox("Tabla?")
@@ -209,7 +233,7 @@ with st.container(border=True):
         st.write('Triángulo verde: señal de compra')
         st.write('Triángulo rojo: señal de venta')
         for i in a:
-            dat, señal, compra, venta = compra_tickers2([i], chart=charto, period=peripe, period1=None, umbral=int(umbra), vert_line_compra=None, dates=True)
+            dat, señal, compra, venta = compra_tickers3([i], chart=charto, period=peripe, period1=None, umbral=int(umbra), vert_line_compra=None, dates=True, vertical = -1)
             if cuadro:
                 datim = dat.copy()
                 datim.reset_index(inplace=True)
@@ -220,19 +244,13 @@ with st.container(border=True):
                 st.write(i)
                 st.dataframe(datimba)
 
-            if charto and not dat.empty:
-                image_path = plot_chart2(dat, i, vert_line=list(señal.values())[0], vert_line_compra=list(compra.values())[0], vert_line_venta=list(venta.values())[0])
-
-                if image_path:
-                    image = Image.open(image_path)
-                    st.image(image)
-
 #--
 if 'datos_acciones' not in st.session_state:
     st.session_state.datos_acciones = None
 
 with st.container(border=True):
     st.subheader('_Esta sección busca acciones por criterio_')
+    peripin = st.selectbox(' período?',['1y', '6mo', '3mo', '1mo'])
     señal = st.selectbox('Seleccione la señal para filtrar:', ['Sin criterio', 'Señal de baja', 'Compra', 'Venta'])
     if señal == 'Señal de baja':
         umb = int(st.text_input("Umbral inferior?", value="0"))
@@ -257,10 +275,10 @@ with st.container(border=True):
         for i in range(num_acciones):
             try:
               if indice == 'S&P500':
-                e = compra_tickers2([acciones[i]], chart=False, period="6mo", period1=None, umbral=umb, vert_line_compra=None, dates=False)
+                e = compra_tickers3([acciones[i]], chart=False, period="6mo", period1=None, umbral=umb, vert_line_compra=None, dates=False, vertical = -1)
                 datos_acciones[acciones[i]] = e
               if indice == 'BYMA':
-                e = compra_tickers2([cedears[i]], chart=False, period="6mo", period1=None, umbral=umb, vert_line_compra=None, dates=False)
+                e = compra_tickers3([cedears[i]], chart=False, period="6mo", period1=None, umbral=umb, vert_line_compra=None, dates=False, vertical = -1)
                 datos_acciones[cedears[i]] = e
 
             except Exception as e:
@@ -317,14 +335,7 @@ with st.container(border=True):
 #--
         # Generar gráficos para cada acción en la lista reporte
         for ticker in reporte:
+            dat, señal, compra, venta = compra_tickers3([ticker], chart=True, period=peripin, period1=None, umbral=int(umb), vert_line_compra=None, dates=True, vertical = peride)
             
-            dat, señal, compra, venta = compra_tickers2([ticker], chart=True, period="1y", period1=None, umbral=int(umb), vert_line_compra=None, dates=True)
-            #plot_chart2(df, ticker, vert_line=fechas, vert_line_compra=fechasCompra, vert_line_venta=fechaVenta)
-            
-            if not dat.empty:
-                image_path = plot_chart2(dat, ticker, vert_line=list(señal.values())[0], vert_line_compra=list(compra.values())[0], vert_line_venta=list(venta.values())[0])
-                if image_path:
-                    image = Image.open(image_path)
-                    st.image(image)
 if st.button('Glosario de Tickers'):
     st.dataframe(df_syp500[['Symbol','Security', 'GICS Sector']])
