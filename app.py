@@ -6,7 +6,7 @@ import numpy as np
 import tempfile  # Para manejar archivos temporales
 from PIL import Image  # Para abrir y mostrar imágenes
 
-def obtener_indicadores_compra2(ticker, period="1y", period1=None, umbral=1, dates=True):
+def obtener_indicadores(ticker, period="1y", period1=None, umbral=1, dates=True):
 
     """
     Obtiene los datos históricos de un ticker y calcula los indicadores técnicos.
@@ -54,7 +54,7 @@ def obtener_indicadores_compra2(ticker, period="1y", period1=None, umbral=1, dat
         # Calcular Bandas de Bollinger
         df['bll_sup'] = df['Close'].rolling(window=20).mean() + 2 * df['Close'].rolling(window=20).std()
         df['bll_inf'] = df['Close'].rolling(window=20).mean() - 2 * df['Close'].rolling(window=20).std()
-
+        
         # Señal de compra
         df['Min-B.Inf'] = np.minimum(df['Close'], df['Open']) - df['bll_inf']
         df['B.Sup-Max'] = df['bll_sup'] - np.maximum(df['Close'], df['Open'])
@@ -102,15 +102,16 @@ def plot_chart2(df, ticker, vert_line=None, vert_line_compra=None, vert_line_ven
         mpf.make_addplot(df['MACD'], panel=1, color='purple'),
         mpf.make_addplot(df['Signal Line'], panel=1, color='orange'),
         mpf.make_addplot([0] * len(df), panel=1, color='#000000', linestyle='--'),
-        mpf.make_addplot(df['Histo'], panel=2, color='blue', alpha=0.7),
-        mpf.make_addplot(df['MACD_P'], panel=2, color='black', alpha=0.7, linestyle='--'),
-        mpf.make_addplot(df['Histo_P'], panel=2, color='red', alpha=0.7, linestyle='--'),
+        mpf.make_addplot(df['Histo'], panel=2, color='red', alpha=0.7, label='Histograma'),  # Agregamos el label 'Histograma'
         mpf.make_addplot([0] * len(df), panel=2, color='#000000', linestyle='--'),
-        mpf.make_addplot(df['RSI'], panel=3, color='green'),
-        mpf.make_addplot(df['RSI-EMA6'], panel=3, color='#000033', alpha=0.7),
-        mpf.make_addplot([70] * len(df), panel=3, color='r', linestyle='--'),
-        mpf.make_addplot([50] * len(df), panel=3, color='#000000', linestyle='--'),
-        mpf.make_addplot([30] * len(df), panel=3, color='g', linestyle='--')]
+        mpf.make_addplot(df['MACD_P'], panel=3, color='purple', alpha=0.7, linestyle='--', label = 'Pendiente de MACD'),
+        mpf.make_addplot(df['Histo_P'], panel=3, color='red', alpha=0.7, linestyle='--', label = 'Pendiente de Histograma'),
+        mpf.make_addplot([0] * len(df), panel=3, color='#000000', linestyle='--'),
+        mpf.make_addplot(df['RSI'], panel=4, color='green'),
+        mpf.make_addplot(df['RSI-EMA6'], panel=4, color='#000033', alpha=0.7),
+        mpf.make_addplot([70] * len(df), panel=4, color='r', linestyle='--'),
+        mpf.make_addplot([50] * len(df), panel=4, color='#000000', linestyle='--'),
+        mpf.make_addplot([30] * len(df), panel=4, color='g', linestyle='--')]
 
     # Agregar vertices en las fechas especificadas
     if vert_line:
@@ -144,20 +145,15 @@ def plot_chart2(df, ticker, vert_line=None, vert_line_compra=None, vert_line_ven
                          figscale=2,        
                          returnfig=True    )
 
-   # Si 'vertical' está definido, agregar las líneas verticales en cada panel
     if vertical:
-        # Obtener el penúltimo registro
         registro = df.index[vertical]
         xloc = df.index.get_loc(registro)
         fecha = df.index[vertical].strftime('%d-%m-%y')
 
-        # Agregar líneas verticales en cada panel (velas, MACD, RSI)
         for ax in axes:
-            ax.axvline(x=xloc, color='black', linestyle='--', linewidth=0.5, label=f'Fecha: {fecha}')
-
-        # Mostrar la leyenda solo en el primer eje (velas japonesas)
+            ax.axvline(x=xloc, color='black', linestyle='--',linewidth=0.5, label=f'Fecha: {fecha}')
+        # Leyendas
         axes[0].legend()
-
     st.pyplot(fig)
 
 
@@ -183,13 +179,13 @@ def compra_tickers3(tickers, chart=False, period="1y", period1=None, umbral=1, v
             # if Ticker in dicto:  (código de comprobación aquí)
             #   df = dicto[ticker]
             if dates:
-                df, fechas, fechasCompra, fechaVenta = obtener_indicadores_compra2(ticker, period=period, period1=period1, umbral=umbral, dates=dates)
+                df, fechas, fechasCompra, fechaVenta = obtener_indicadores(ticker, period=period, period1=period1, umbral=umbral, dates=dates)
                 all_dates[ticker] = [date.strftime('%Y-%m-%d') for date in fechas]
                 all_datesen[ticker] = [date.strftime('%Y-%m-%d') for date in fechasCompra]
                 all_datesenon[ticker] = [date.strftime('%Y-%m-%d') for date in fechaVenta]
                 print(f"Procesando...")
             else:
-                df = obtener_indicadores_compra2(ticker, period=period, period1=period1, umbral=umbral, dates=dates)
+                df = obtener_indicadores(ticker, period=period, period1=period1, umbral=umbral, dates=dates)
 
             if not df.empty and chart:
                 plot_chart2(df, ticker, vert_line=fechas, vert_line_compra=fechasCompra, vert_line_venta=fechaVenta, vertical=vertical)
@@ -205,12 +201,12 @@ def compra_tickers3(tickers, chart=False, period="1y", period1=None, umbral=1, v
 url = 'https://raw.githubusercontent.com/hernanPabloPizarro/PrediccionMercadosFinancieros/main/syp500.csv'
 df_syp500 = pd.read_csv(url)
 acciones = df_syp500['Symbol'].tolist()
-#acciones = acciones[0:15]  #borrar esta linea para las 500 acciones
+#acciones = acciones[0:5]  #borrar esta linea para las 500 acciones
 
 urlbyma = 'https://raw.githubusercontent.com/hernanPabloPizarro/PrediccionMercadosFinancieros/refs/heads/main/bymaTickers.csv'
 byma = pd.read_csv(urlbyma)
 cedears = byma['Ticker'].tolist()
-#cedears = cedears[0:5]  #borrar esta linea para las 500 acciones
+#cedears = cedears[0:50]  #borrar esta linea para las 500 acciones
 
 st.markdown("[Antes de usar esta app. Lea este Manual](https://github.com/hernanPabloPizarro/PrediccionMercadosFinancieros/blob/main/documentación.pdf)")
 st.title("Predictor de Acciones")
@@ -224,6 +220,12 @@ with st.container(border=True):
     
     charto = st.checkbox("Gráfico?")
     cuadro = st.checkbox("Tabla?")
+    verti = int(st.text_input("Días anteriores?", value=0))
+
+    if verti == 0:
+        verti=-1
+    else:
+        verti = (verti *(-1))-1
 
     a = []
     a+=tic
@@ -233,11 +235,11 @@ with st.container(border=True):
         st.write('Triángulo verde: señal de compra')
         st.write('Triángulo rojo: señal de venta')
         for i in a:
-            dat, señal, compra, venta = compra_tickers3([i], chart=charto, period=peripe, period1=None, umbral=int(umbra), vert_line_compra=None, dates=True, vertical = -1)
+            dat, señal, compra, venta = compra_tickers3([i], chart=charto, period=peripe, period1=None, umbral=int(umbra), vert_line_compra=None, dates=True, vertical = verti)
             if cuadro:
                 datim = dat.copy()
                 datim.reset_index(inplace=True)
-                datimba = datim[['Date','Open', 'High', 'Low', 'Close','MACD','Min-B.Inf','Shift']].copy()
+                datimba = datim[['Date','Open', 'High', 'Low', 'Close','MACD','Min-B.Inf','Histo','MACD_P','Histo_P','Shift']].copy()
                 datimba['Shift'] = datimba['Shift'].replace({1: 'compra', -1: 'venta'})
                 datimba = datimba.rename(columns={'Shift': 'Señal'})
                 datimba['Date'] = pd.to_datetime(datim['Date']).dt.date
@@ -251,7 +253,7 @@ if 'datos_acciones' not in st.session_state:
 with st.container(border=True):
     st.subheader('_Esta sección busca acciones por criterio_')
     peripin = st.selectbox(' período?',['1y', '6mo', '3mo', '1mo'])
-    señal = st.selectbox('Seleccione la señal para filtrar:', ['Sin criterio', 'Señal de baja', 'Compra', 'Venta'])
+    señal = st.selectbox('Seleccione la señal para filtrar:', ['Sin criterio', 'Señal de baja', 'Compra', 'Venta', 'Cambio de pendiente de histograma a positiva'])
     if señal == 'Señal de baja':
         umb = int(st.text_input("Umbral inferior?", value="0"))
     else:
@@ -315,9 +317,12 @@ with st.container(border=True):
                         if (e.iloc[peride]['Shift'] == 1) and (e.iloc[peride]['MACD'] < e.iloc[peride]['Signal Line']):
                             reporte.append(accion)
 
-
                     if señal == 'Venta':
                         if (e.iloc[peride]['Shift'] == -1) and (e.iloc[peride]['MACD'] > e.iloc[peride]['Signal Line']):
+                            reporte.append(accion)
+
+                    if señal == 'Cambio de pendiente de histograma a positiva':
+                        if (e.iloc[peride]['Histo_P'] > 0) and (e['Histo_P'].shift(1).iloc[peride] < 0):# and (e.loc[peride, 'Histo'] < -0.02):
                             reporte.append(accion)
 
                 except Exception as e:
