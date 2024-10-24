@@ -34,6 +34,7 @@ def obtener_indicadores(ticker, period="1y", period1=None, umbral=1, dates=True)
         # Calcular EMA de 50 y 200 días
         df['EMA50'] = df['Close'].ewm(span=50, adjust=False).mean()
         df['EMA200'] = df['Close'].ewm(span=200, adjust=False).mean()
+        df['Vol_EMA6'] = df['Volume'].ewm(span = 6, adjust=False).mean()
 
         # Calcular RSI de 14 días
         delta = df['Close'].diff()
@@ -45,16 +46,20 @@ def obtener_indicadores(ticker, period="1y", period1=None, umbral=1, dates=True)
 
         # Calcular MACD
         df['MACD'] = df['Close'].ewm(span=12, adjust=False).mean() - df['Close'].ewm(span=26, adjust=False).mean()
+        df['MACD_min'] = df['MACD'].cummin()
         df['Signal Line'] = df['MACD'].ewm(span=9, adjust=False).mean()
         df['Histo'] = df['MACD'] - df['Signal Line']
+        df['Histo_Min'] = df['Histo'].cummin()
         df['Histo_P'] = df['Histo'] - df['Histo'].shift(1)
+        df['Histo_P_min'] = df['Histo_P'].cummin()
+        df['Histo_P_P'] = df['Histo_P']-df['Histo_P'].shift(1)
         df['MACD_P'] = df['MACD'] - df['MACD'].shift(1)
-        df['P(MACD-Histo)'] = df['MACD_P'] - df['Histo_P']
+        df['dif_P'] = df['Histo_P']-df['MACD_P']
 
         # Calcular Bandas de Bollinger
         df['bll_sup'] = df['Close'].rolling(window=20).mean() + 2 * df['Close'].rolling(window=20).std()
         df['bll_inf'] = df['Close'].rolling(window=20).mean() - 2 * df['Close'].rolling(window=20).std()
-        
+
         # Señal de compra
         df['Min-B.Inf'] = np.minimum(df['Close'], df['Open']) - df['bll_inf']
         df['B.Sup-Max'] = df['bll_sup'] - np.maximum(df['Close'], df['Open'])
@@ -100,18 +105,23 @@ def plot_chart2(df, ticker, vert_line=None, vert_line_compra=None, vert_line_ven
         mpf.make_addplot(df['bll_sup'], color='purple', panel=0, linestyle='--'),
         mpf.make_addplot(df['bll_inf'], color='purple', panel=0, linestyle='--'),
         mpf.make_addplot(df['MACD'], panel=1, color='purple'),
+        mpf.make_addplot(df['MACD_min'], panel=1, color='purple', linestyle='--'),
         mpf.make_addplot(df['Signal Line'], panel=1, color='orange'),
-        mpf.make_addplot([0] * len(df), panel=1, color='#000000', linestyle='--'),
-        mpf.make_addplot(df['Histo'], panel=2, color='red', alpha=0.7, label='Histograma'),  # Agregamos el label 'Histograma'
-        mpf.make_addplot([0] * len(df), panel=2, color='#000000', linestyle='--'),
+        mpf.make_addplot([0] * len(df), panel=1, color='#000000', linestyle='--'), # agregué esta línea
+        mpf.make_addplot(df['Histo'], panel=2, type= 'bar',color='orange', alpha=0.7, label='Histograma'),  # Agregamos el label 'Histograma'
+        mpf.make_addplot(df['Histo_Min'], panel=2, color='blue', alpha=0.7, linestyle='--'),
         mpf.make_addplot(df['MACD_P'], panel=3, color='purple', alpha=0.7, linestyle='--', label = 'Pendiente de MACD'),
         mpf.make_addplot(df['Histo_P'], panel=3, color='red', alpha=0.7, linestyle='--', label = 'Pendiente de Histograma'),
+        mpf.make_addplot(df['Histo_P_min'], panel=3, color='red', alpha=0.5, linestyle='--'),
+        mpf.make_addplot(df['Histo_P_P'], panel=3, color='black', alpha=0.5, linestyle='--'), #será?
         mpf.make_addplot([0] * len(df), panel=3, color='#000000', linestyle='--'),
-        mpf.make_addplot(df['RSI'], panel=4, color='green'),
-        mpf.make_addplot(df['RSI-EMA6'], panel=4, color='#000033', alpha=0.7),
-        mpf.make_addplot([70] * len(df), panel=4, color='r', linestyle='--'),
-        mpf.make_addplot([50] * len(df), panel=4, color='#000000', linestyle='--'),
-        mpf.make_addplot([30] * len(df), panel=4, color='g', linestyle='--')]
+        mpf.make_addplot(df['Volume'], panel=4, type='bar', color='green', alpha=0.7, label = 'Volume'),
+        mpf.make_addplot(df['Vol_EMA6'], panel=4, color='black', alpha=0.7, linestyle='--', label = 'EMA6 de Volumen'),
+        mpf.make_addplot(df['RSI'], panel=5, color='green', label = 'RSI'),
+        mpf.make_addplot(df['RSI-EMA6'], panel=5, color='#000033', alpha=0.7),
+        mpf.make_addplot([70] * len(df), panel=5, color='r', linestyle='--'),
+        mpf.make_addplot([50] * len(df), panel=5, color='#000000', linestyle='--'),
+        mpf.make_addplot([30] * len(df), panel=5, color='g', linestyle='--')]
 
     # Agregar vertices en las fechas especificadas
     if vert_line:
@@ -206,7 +216,7 @@ acciones = df_syp500['Symbol'].tolist()
 urlbyma = 'https://raw.githubusercontent.com/hernanPabloPizarro/PrediccionMercadosFinancieros/refs/heads/main/bymaTickers.csv'
 byma = pd.read_csv(urlbyma)
 cedears = byma['Ticker'].tolist()
-#cedears = cedears[0:50]  #borrar esta linea para las 500 acciones
+#cedears = cedears[0:20]  #borrar esta linea para las 500 acciones
 
 st.markdown("[Antes de usar esta app. Lea este Manual](https://github.com/hernanPabloPizarro/PrediccionMercadosFinancieros/blob/main/documentación.pdf)")
 st.title("Predictor de Acciones")
